@@ -1,40 +1,19 @@
-import React, { useState } from 'react';
-import {
-  Flex,
-  Button,
-  Image,
-  Text,
-  Center,
-  Input,
-  Box,
-  Heading,
-} from '@chakra-ui/react';
-import ChatArea from './components/ChatArea';
-
-import ChatInputArea from './components/ChatInputArea.jsx';
-import TitleArea from './components/TitleArea';
+import React from 'react';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Chat from './pages/Chat';
+import Cancellation from './pages/Cancelation';
+import './App.css';
 
 function App() {
-  const [message, setMessage] = useState('');
-
-  const fetchMessage = () => {
-    // PHPサーバーからデータを取得
-    fetch('./server.php')  // または実際のURLを指定
-      .then(response => response.json())
-      .then(data => setMessage(data.message))
-      .catch(error => console.error('Error:', error));
-  };
-
   return (
-    <Flex w="100vw" h="100vh" fontSize={{base: "12px", lg: "15px"}}>
-      <TitleArea />
-      {/* ChatMain画面 */}
-      <Flex w={{base: "100%", lg: "50%"}} h="100%" flexDirection="column">
-        <ChatArea />
-        {/* 後で消す */}
-        <ChatInputArea />
-      </Flex>
-    </Flex>
+    <>
+     <BrowserRouter>
+      <Routes>
+        <Route path="chintai-chat-support" element={<Chat />} />
+        <Route path="chintai-chat-support/cancellation" element={<Cancellation />} />
+      </Routes>
+    </BrowserRouter>
+    </>
   );
 }
 

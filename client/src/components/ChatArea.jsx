@@ -6,6 +6,7 @@ import {
   Box,
   Spinner,
   SkeletonCircle,
+  Grid,
 } from '@chakra-ui/react';
 import CLPSpeechBubble from './CLPSpeechBubble';
 import UserSpeechBubble from './UserSpeechBubble';
@@ -13,6 +14,8 @@ import * as Buttons from '../scenario/choicesBtn';
 import * as replyMessage from '../scenario/replyMessage';
 import ChatAreaHeader from './ChatAreaHeader';
 import { messageMappings, buttonMappings } from '../scenario/mappings';
+import Loading from './Loading';
+import DispChoicesArea from './DispChoicesArea';
 
 const ChatArea = () => {
 
@@ -53,7 +56,7 @@ const ChatArea = () => {
         if (messagesRef.current) {
           messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
         }
-      }, [messageList]);
+    }, [messageList]);
 
     /** 選択履歴更新時処理 */
     useEffect(() => {
@@ -92,6 +95,7 @@ const ChatArea = () => {
             setMessageList((prevMessageList) => {
                 const newMessageList = [...prevMessageList];
                 if (newMessageList.length > 0) {
+                    // 入力中表示を消す
                     newMessageList.pop();
                   }
                   return newMessageList;
@@ -153,23 +157,9 @@ const ChatArea = () => {
     return (
         <>
         <ChatAreaHeader clickResetBtn={clickResetBtn} clickPrevBtn={clickPrevBtn} historyNone={historyNone} />
-        <Flex w="100%" h="79%" flexDirection="column" p="1rem" overflowY="scroll" position="relative" ref={messagesRef}> 
+        <Flex w="100%" h="90%" flexDirection="column" p="1rem" overflowY="scroll" position="relative" ref={messagesRef} fontSize="14px"> 
         {isResetLoading ? (
-                <Box
-                    position="fixed"
-                    top="0"
-                    left="100%"
-                    transform="translateX(-100%)"
-                    width={{base: "100%", lg: "50%"}}
-                    height="100vh"
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                    bg="rgba(0, 0, 0, 0.3)"
-                    zIndex="101"
-                >
-                    <Spinner color="white" size="xl" thickness='4px'/>
-                </Box>
+                <Loading />
             ) : ( 
             <>
             {messageList.map((message, index) => (
@@ -184,14 +174,13 @@ const ChatArea = () => {
                             objectFit="cover"
                             />
                         </Box> 
-                        <Flex w={{base: "72%", lg: "auto"}} flexDirection="column" mt="1">
-                        {message.text.map((msg, index) => (
-                            <CLPSpeechBubble key={index}>
-                                {msg}
-                            </CLPSpeechBubble>
+                        <Flex w={{base: "72%", lg: "80%"}} flexDirection="column" mt="1">
+                            {message.text.map((msg, index) => (
+                                <CLPSpeechBubble key={index}>
+                                    {msg}
+                                </CLPSpeechBubble>
                             ))}
-                        </Flex>
-                        
+                        </Flex>    
                     </Flex>
                 ) : (
                     /* ユーザー側　チャット */
@@ -208,25 +197,10 @@ const ChatArea = () => {
                 </>
             ))} 
             {/* ユーザの選択肢表示エリア */}
-            <Box w={{base: "80%", lg: "60%"}} position="sticky" bottom="3" left="100%" zIndex="100">
-            {dispChoices.map((button, index) => (
-                <Button
-                key={index}
-                w="100%"
-                h={{base: "2.5rem", lg: "3rem"}}
-                justify="center"
-                align="center"
-                border="1px solid #ccc"
-                bg="white"
-                _hover={{ bg: "#E1E300" }}
-                mb="2"
-                fontSize={{base: "12px", lg: "15px"}}
-                onClick={() => clickChoicesBtn(button.btnId, button.label)}
-                >
-                {button.label}
-                </Button>
-            ))}
-            </Box>
+            <DispChoicesArea 
+                dispChoices={dispChoices} 
+                clickChoicesBtn={clickChoicesBtn}
+            />
             </>
         )}
         </Flex>
