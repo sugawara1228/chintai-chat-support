@@ -169,7 +169,7 @@ const ChatArea = () => {
                     <Flex mb="3">
                         <Box w={{base: "18%", lg: "80px"}}>
                             <Image 
-                            src="./img/android-chrome-152x152.png"
+                            src="/chintai-chat-support/img/android-chrome-152x152.png"
                             boxSize={{base: "45px", lg: "50px"}}
                             objectFit="cover"
                             />
