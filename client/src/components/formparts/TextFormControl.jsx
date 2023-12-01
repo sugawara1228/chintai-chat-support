@@ -31,7 +31,7 @@ const TextFormControl = (props) => {
     } = props;
 
     /** style  */ 
-    const inputStyle = { border: "1px solid #d5d5d5", fontSize: "14px" };
+    const inputStyle = { border: "1px solid #d5d5d5", fontSize: "14px", borderRadius: "4px" };
     const selectStyle = { border: "1px solid #d5d5d5", fontSize: "14px" };
     const placeholderStyle = { opacity: "1", color: 'gray.400' };
     const formLabelStyle = { letterSpacing: "1px", color: "#444", fontSize: "15px" };
@@ -39,9 +39,9 @@ const TextFormControl = (props) => {
     const confirmText = { borderBottom: "1px", solid: "#ccc", paddingBottom: ".5rem"}
 
     return (
-        <FormControl isInvalid={errors[id]} mb=".9rem" >
+        <FormControl isInvalid={errors[id]} mb=".9rem">
             <FormLabel style={formLabelStyle} >
-                <Text as="span">
+                <Text as="span" fontSize={{base: "12px", lg: "14px"}}>
                     {labelName}
                 </Text>
                 {badge ? (
@@ -55,6 +55,8 @@ const TextFormControl = (props) => {
                 <Input
                 id={id}
                 type="text"
+                fontSize={{base: "12px", lg: "14px"}}
+                height={{base: "2.7rem", lg: "2.7rem"}}
                 placeholder={placeholder}
                 _placeholder={placeholderStyle}
                 style={inputStyle}
@@ -68,7 +70,9 @@ const TextFormControl = (props) => {
                 </Text>
             )}
             <FormErrorMessage>
-                {errors[id] && errors[id].message}
+                <Text as="span" fontSize={{base: "12px", lg: "14px"}}>
+                    {errors[id] && errors[id].message}
+                </Text>
             </FormErrorMessage>
         </FormControl>
     );
