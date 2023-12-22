@@ -22,8 +22,18 @@ export const Msg1_1 = {
     CLPMsg: true,
 }
 
+export const Msg1_2 = {
+    text: ["更新についての項目一覧です。", "以下から確認したい内容をお選びください。"],
+    CLPMsg: true,
+}
+
 export const Msg1_3 = {
     text: ["退去についての項目一覧です。", "以下から確認したい内容をお選びください。"],
+    CLPMsg: true,
+}
+
+export const Msg1_4 = {
+    text: ["修繕・トラブル関係についての項目一覧です。", "以下から確認したい内容をお選びください。"],
     CLPMsg: true,
 }
 

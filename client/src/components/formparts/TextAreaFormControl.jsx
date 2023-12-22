@@ -6,10 +6,11 @@ import {
   Text,
   FormControl,
   FormErrorMessage,
+  Textarea,
 } from '@chakra-ui/react';
 
 /** テキストinputのフォーム用コンポーネント */
-const TextFormControl = (props) => {
+const TextAreaFormControl = (props) => {
 
     const { 
         labelName, 
@@ -50,9 +51,8 @@ const TextFormControl = (props) => {
                 </Text>
             )}
             {!isSubmit ? (
-                <Input
+                <Textarea
                 id={id}
-                type="text"
                 fontSize={{base: "12px", lg: "14px"}}
                 height={{base: "2.7rem", lg: "2.7rem"}}
                 placeholder={placeholder}
@@ -63,7 +63,7 @@ const TextFormControl = (props) => {
                 )}
                 />
             ) : (
-                <Text bg="gray.200" pl="4" pt="2" style={confirmText}>
+                <Text bg="gray.200" pl="4" pt="2" minH="2.4rem"  style={confirmText}>
                     {getValues(id)}
                 </Text>
             )}
@@ -76,4 +76,4 @@ const TextFormControl = (props) => {
     );
 }
 
-export default TextFormControl;
+export default TextAreaFormControl;

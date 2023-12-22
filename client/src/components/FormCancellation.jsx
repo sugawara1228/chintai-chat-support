@@ -14,7 +14,7 @@ import {
   Heading,
   Icon,
 } from '@chakra-ui/react';
-import { mainColor } from '../constant/constant';
+import { mainColor, timeSlots } from '../constant/constant';
 import { useForm, Controller } from 'react-hook-form';
 import { prefectures } from '../constant/constant';
 import Loading from './Loading';
@@ -26,12 +26,16 @@ import { addDays } from 'date-fns';
 import { registerLocale } from 'react-datepicker';
 // 日本語化
 import ja from "date-fns/locale/ja";
-import Calendar from './formparts/Calendar';
+import axios from 'axios';
+import TextAreaFormControl from './formparts/TextAreaFormControl';
+import SelectTimeControl from './formparts/SelectTimeControl';
+import CheckBoxFormControl from './formparts/CheckBoxFormControl';
+import AddressFormControl from './formparts/AddressFormControl';
 registerLocale("ja", ja);
 
 const FormCancellation = () => {
 
-    const { control, register, handleSubmit, getValues, formState: { errors, isDirty }, } = useForm({
+    const { control, register, handleSubmit, getValues, setValue, formState: { errors, isDirty }, } = useForm({
         mode: 'onBlur',
         criteriaMode: 'all',
     });
@@ -46,7 +50,7 @@ const FormCancellation = () => {
         setIsLoading(true);
         setTimeout(() => {
             setIsLoading(false);
-        }, 300);
+        }, 500);
     },[])
 
     useEffect(() => {
@@ -69,19 +73,20 @@ const FormCancellation = () => {
     }
 
     /** 確認画面へ・送信ボタン押下時処理 */ 
-    const onSubmit = () => {
+    const onSubmit = async (data) => {
         setIsLoading(true);
-        setTimeout(() => {
-            if(isSubmit) {
-                    // 送信時処理
-            } else {
-                    // 確認画面へ
-                setIsSubmit(true);
-            }
+        if(isSubmit) {
+            // 送信時処理
+                
+                // 完了画面に遷移
+                //navigate("Complete", {formType: "cancellation"});
             
-            setIsLoading(false);
-            
-        }, 1000);
+        } else {
+            // 確認画面へ
+            setIsSubmit(true);
+        }
+        
+        setIsLoading(false);
         scrollToRef.current.scrollIntoView({ behavior: 'smooth' });
     }
 
@@ -119,11 +124,11 @@ const FormCancellation = () => {
                     </Button>
                 </Flex>
             )}
-            <Heading as="h2" fontSize={{base: "16px", lg: "22px"}} color="#444" mt="3rem" mb="2rem">
+            <Heading as="h2" fontSize={{base: "14px", lg: "20px"}} color="#444" mt="3rem" mb="2rem">
                 {isSubmit ? "解約申込フォーム（確認画面）" :  "解約申込フォーム"}
             </Heading>
             <Box w={{base: "90%", lg: "80%"}} >
-                <form style={{width: "100%"}} onSubmit={handleSubmit(onSubmit)} method='post'>
+                <form style={{width: "100%"}}  onSubmit={handleSubmit(onSubmit)} method='post'>
                     <TextFormControl 
                         id="name"
                         labelName="氏名（フルネーム）"
@@ -203,8 +208,152 @@ const FormCancellation = () => {
                         getValues={getValues}
                         placeholder="example@mail.com"
                     />
-                    <Calendar />
-
+                    <TextFormControl 
+                        id="leavingDay"
+                        labelName="退去希望日"
+                        badge={true}
+                        register={register}
+                        errors={errors}
+                        validation={{
+                            required: '入力が必須の項目です。',
+                            pattern: {
+                                value: /^\d{4}\/\d{2}\/\d{2}$/,
+                                message: 'yyyy/mm/ddの形式で入力してください。',
+                            }
+                        }}
+                        isSubmit={isSubmit}
+                        getValues={getValues}
+                        placeholder="2023/01/01"
+                    />
+                    <TextFormControl 
+                        id="presenceDay1"
+                        labelName="立会希望日（第一希望）"
+                        subText="※引っ越し後、お部屋が空の状況で行います。"
+                        badge={true}
+                        register={register}
+                        errors={errors}
+                        validation={{
+                            required: '入力が必須の項目です。',
+                            pattern: {
+                                value: /^\d{4}\/\d{2}\/\d{2}$/,
+                                message: 'yyyy/mm/ddの形式で入力してください。',
+                            }
+                        }}
+                        isSubmit={isSubmit}
+                        getValues={getValues}
+                        placeholder="2023/01/01"
+                    />
+                    <SelectTimeControl
+                        id="presenceTime1"
+                        labelName=""
+                        list={timeSlots}
+                        badge={false}
+                        register={register}
+                        errors={errors}
+                        validation={{
+                            required: '入力が必須の項目です。',
+                        }}
+                        isSubmit={isSubmit}
+                        getValues={getValues}
+                    />
+                    <TextFormControl 
+                        id="presenceDay2"
+                        labelName="立会希望日（第二希望）"
+                        badge={true}
+                        register={register}
+                        errors={errors}
+                        validation={{
+                            required: '入力が必須の項目です。',
+                            pattern: {
+                                value: /^\d{4}\/\d{2}\/\d{2}$/,
+                                message: 'yyyy/mm/ddの形式で入力してください。',
+                            }
+                        }}
+                        isSubmit={isSubmit}
+                        getValues={getValues}
+                        placeholder="2023/01/01"
+                    />
+                    <SelectTimeControl
+                        id="presenceTime2"
+                        labelName=""
+                        list={timeSlots}
+                        badge={false}
+                        register={register}
+                        errors={errors}
+                        validation={{
+                            required: '入力が必須の項目です。',
+                        }}
+                        isSubmit={isSubmit}
+                        getValues={getValues}
+                    />
+                    <CheckBoxFormControl
+                        id="liquidation"
+                        labelName="清算について"
+                        text={["※賃貸借契約書に沿って精算させていただきます。",
+                           "短期解約違約金が発生する場合がございますのでご確認下さいませ。"]}
+                        list={timeSlots}
+                        badge={true}
+                        register={register}
+                        errors={errors}
+                        validation={{
+                            required: '確認が必須の項目です。',
+                        }}
+                        isSubmit={isSubmit}
+                        getValues={getValues}
+                    />
+                    <TextFormControl 
+                        id="keys"
+                        labelName="鍵の保有数"
+                        badge={true}
+                        register={register}
+                        errors={errors}
+                        validation={{
+                            required: '入力が必須の項目です。',
+                            pattern: {
+                                value: /^[0-9]+$/,
+                                message: '半角数字のみで入力してください。',
+                            }
+                        }}
+                        isSubmit={isSubmit}
+                        getValues={getValues}
+                        placeholder="2"
+                    />
+                    <TextFormControl 
+                        id="movingDay"
+                        labelName="引越し予定日"
+                        badge={true}
+                        register={register}
+                        errors={errors}
+                        validation={{
+                            required: '入力が必須の項目です。',
+                            pattern: {
+                                value: /^\d{4}\/\d{2}\/\d{2}$/,
+                                message: 'yyyy/mm/ddの形式で入力してください。',
+                            }
+                        }}
+                        isSubmit={isSubmit}
+                        getValues={getValues}
+                        placeholder="2023/01/01"
+                    />
+                    <AddressFormControl
+                        id="movingAddress"
+                        labelName="引越し先住所"
+                        badge={true}
+                        register={register}
+                        errors={errors}
+                        isSubmit={isSubmit}
+                        getValues={getValues}
+                        setValue={setValue}
+                    />
+                    <TextAreaFormControl 
+                        id="other"
+                        labelName="その他"
+                        badge={false}
+                        register={register}
+                        errors={errors}
+                        isSubmit={isSubmit}
+                        getValues={getValues}
+                    />
                     
                     <Flex w="100%" justify="center" mt="12" >
                         {isSubmit ? (

@@ -2,11 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import {
   Flex,
   Image,
-  Button,
   Box,
-  Spinner,
   SkeletonCircle,
-  Grid,
 } from '@chakra-ui/react';
 import CLPSpeechBubble from './CLPSpeechBubble';
 import UserSpeechBubble from './UserSpeechBubble';
@@ -32,7 +29,7 @@ const ChatArea = () => {
         setTimeout(() => {
             setResetTrigger((prevTrigger) => !prevTrigger);
             setIsResetLoading(false);
-        }, 2000);
+        }, 1600);
     },[])
 
     useEffect(() => {
@@ -60,11 +57,9 @@ const ChatArea = () => {
 
     /** 選択履歴更新時処理 */
     useEffect(() => {
-        console.log(`choiceHistory: ${choiceHistory}`);
         if(choiceHistory.length === 1) {
             setHistoryNone(true);
         }
-        console.log(`HistoryNone: ${historyNone}`);
       }, [choiceHistory]);
 
     /** ユーザーの選択肢押下処理 */

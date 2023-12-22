@@ -47,6 +47,25 @@ export const Buttons1_1 = [
   },
 ];
 
+export const Buttons1_2 = [
+  {
+    label: '更新日はいつになるのか',
+    btnId: '1_2_1',
+  },
+  {
+    label: '居住中の物件を更新したい',
+    btnId: '1_2_2',
+  },
+  {
+    label: '更新料はいくらかかる？',
+    btnId: '1_2_3',
+  },
+  {
+    label: '更新料はいつまで払えばよい？',
+    btnId: '1_2_4',
+  },
+];
+
 export const Buttons1_3 = [
   {
     label: '退去の申請方法',
@@ -75,6 +94,45 @@ export const Buttons1_3 = [
   {
     label: '退去時の費用はいくらかかる？',
     btnId: '1_3_7',
+  },
+];
+
+export const Buttons1_4 = [
+  {
+    label: 'エアコンの不具合',
+    btnId: '1_4_1',
+  },
+  {
+    label: '電気の不具合',
+    btnId: '1_4_2',
+  },
+  {
+    label: '排水溝のつまり・臭いなど',
+    btnId: '1_4_3',
+  },
+  {
+    label: '給湯器の不具合（お湯が出ない）',
+    btnId: '1_4_4',
+  },
+  {
+    label: 'ガスコンロ・IHの不具合',
+    btnId: '1_4_5',
+  },
+  {
+    label: '洗面所の不具合',
+    btnId: '1_4_6',
+  },
+  {
+    label: 'トイレの不具合',
+    btnId: '1_4_7',
+  },
+  {
+    label: '扉・ドアの不具合',
+    btnId: '1_4_8',
+  },
+  {
+    label: 'その他の不具合',
+    btnId: '1_4_9',
   },
 ];
 
